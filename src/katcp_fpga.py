@@ -107,7 +107,7 @@ class KatcpFpga(CasperFpga, async_requester.AsyncRequester,
             connected = self.wait_connected(timeout)
             if not connected:
                 err_msg = 'Connection to {} not established within {}s'.format(
-                    self.bind_address_string, timeout)
+                    self.host, timeout)
                 LOGGER.error(err_msg)
                 raise RuntimeError(err_msg)
 
