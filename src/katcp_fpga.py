@@ -301,14 +301,15 @@ class KatcpFpga(CasperFpga, async_requester.AsyncRequester,
         """
         # TODO - The logic here is for broken TCPBORPHSERVER - needs to be fixed.
         if 'program_filename' in self.system_info.keys():
+            prog_fname = self.system_info['program_filename'].strip()
             if filename is None:
-                filename = self.system_info['program_filename']
-            elif filename != self.system_info['program_filename']:
+                filename = prog_fname
+            elif filename != prog_fname and prog_fname not in (None, '', u''):
                 LOGGER.error('%s: programming filename %s, configured '
                              'programming filename %s' %
-                             (self.host, filename,
-                              self.system_info['program_filename']))
-                # This doesn't seem as though it should really be an error...
+                             (self.host, filename, prog_fname))
+                raise RuntimeError('program_filename is specified and does not '
+                                   'match given filename.')
         if filename is None:
             LOGGER.error('%s: cannot program with no filename given. '
                          'Exiting.' % self.host)
